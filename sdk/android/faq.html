@@ -199,7 +199,7 @@ want to override <a href="http://developer.android.com/reference/android/app/Act
 using a Service, you'll want to override <a href="http://developer.android.com/reference/android/app/Service.html#onStartCommand(android.content.Intent,%20int,%20int)">Service.onStartCommand()</a>.  For a BroadcastReceiver, override <a href="http://developer.android.com/reference/android/content/BroadcastReceiver.html#onReceive(android.content.Context,%20android.content.Intent)">BroadcastReceiver.onReceive()</a>.</p>
 
 <p>When you receive the intent, you can retrieve the <a href="javadoc/com/twilio/client/Device.html">Device</a> and <a href="javadoc/com/twilio/client/Connection.html">Connection</a> for the incoming call using <a href="http://developer.android.com/reference/android/content/Intent.html#getParcelableExtra(java.lang.String)">Intent.getParcelableExtra()</a>
-with the <a href="javadoc/com/twilio/client/Device.html#EXTRA_DEVICE">Device.EXTRA_DEVICE</a> and <a href="javadoc/com/twilio/client/Device.html#EXTRA_CONNECTION">Device.EXTRA_CONNECTION</a> keys, respectively.  </p>
+with the <a href="javadoc/com/twilio/client/Device.html#EXTRA_DEVICE">Device.EXTRA_DEVICE</a> and <a href="javadoc/com/twilio/client/Device.html#EXTRA_CONNECTION">Device.EXTRA_CONNECTION</a> keys, respectively.</p>
 
 <p>The following code snippet illustrates one simple pattern in a single-activity application:</p>
 
@@ -409,7 +409,7 @@ about media playback, please visit the
 <a href="http://developer.android.com/guide/topics/media/index.html">Android Multimedia Guide</a>.</p>
 
 <p>If you need more advanced control over playback of sounds, you may omit the sound resources, 
-disable the relevant properties on <a href="javadoc/com/twilio/client/Device.html">Device</a>, and manage playback with your own classes.  </p>
+disable the relevant properties on <a href="javadoc/com/twilio/client/Device.html">Device</a>, and manage playback with your own classes.</p>
 
 <h2 id="a-nameproguardwhat-is-the-recommended-proguard-directives-exclusions-when-running-the-twilio-client-for-androida"><a name="proguard">What is the recommended proguard directives (exclusions) when running the Twilio Client for Android?</a></h2>
 

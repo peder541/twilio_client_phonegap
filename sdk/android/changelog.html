@@ -25,33 +25,118 @@
 
 <h1 id="twilio-client-android-sdk-changes">Twilio Client Android SDK Changes</h1>
 
-<h2 id="january-29-2014">1.2.1 (January 29, 2014)</h2>
+<h2 id="jun-25-2015">1.2.4 (Jun 25, 2015)</h2>
 
 <h3 id="new-features">New Features</h3>
 
 <h3 id="bug-fixes">Bug Fixes</h3>
 
-<p>ASDK-8 - CallSid is now available for outgoing calls.</p>
+<ul>
+  <li>
+    <p>CLIENT-1879 - onConnecting callback is now called only once after Device.connect().</p>
+  </li>
+  <li>
+    <p>CLIENT-1881 - onStopListening callback is now called when device is updated with Outgoing-only token.</p>
+  </li>
+  <li>
+    <p>CLIENT-1880 - onStartListening callback is now called when updated with valid capability token.</p>
+  </li>
+  <li>
+    <p>CLIENT-1882 - SDK now receives presence events when subscribed.</p>
+  </li>
+</ul>
 
-<p>MSDK-52 - Eliminated a rare crash when handling a 302 redirect response from Twilio.</p>
+<h2 id="jun-11-2015">1.2.3 (Jun 11, 2015)</h2>
 
-<p>MSDK-79, MSDK-64, MSDK-66, MSDK-96 and MSDK-178 - Fixed a number of crashes that could occur when answering an incoming call.</p>
+<h3 id="new-features-1">New Features</h3>
 
-<p>MSDK-89 - Fixed a crash that could occur when initializing a Device object with the incoming capability.</p>
+<h3 id="bug-fixes-1">Bug Fixes</h3>
 
-<p>MSDK-298 - The SDK now uses OpenSSL v1.0.1k</p>
+<ul>
+  <li>
+    <p>CLIENT-1699, CLIENT-1705 - Fixed a number of crashes that could occur when initial SIP request is sent to the server.</p>
+  </li>
+  <li>
+    <p>CLIENT-1706 - Moved HTTP GET request from the UI thread to Asynctask in MonkeyPhone example.</p>
+  </li>
+  <li>
+    <p>CLIENT-1846, CLIENT-1869, CLIENT-1870 - Fixed a crash that occurred on network connectivity change.</p>
+  </li>
+  <li>
+    <p>CLIENT-1847 - The SDK now fires OnStartListening callback after SIP registration completes.</p>
+  </li>
+  <li>
+    <p>CLIENT-1853, CLIENT-1691 - Fixed a number of crashes occurred calling Twilio.shutdown().</p>
+  </li>
+</ul>
 
-<p>MSDK-299 - Fixed a crash that would occur when caller hangs up right after initiating a call.</p>
+<h2 id="mar-19-2015">1.2.2 (Mar. 19, 2015)</h2>
 
-<h2 id="december-18-2014">1.2.0 (December 18, 2014)</h2>
+<h3 id="new-features-2">New Features</h3>
+
+<ul>
+  <li>MSDK-88 - Android SDK exposes its version.</li>
+</ul>
+
+<h3 id="bug-fixes-2">Bug Fixes</h3>
+
+<ul>
+  <li>
+    <p>MSDK-113 - Added capability token validity check before making an outbound call.</p>
+  </li>
+  <li>
+    <p>MSDK-307 - ConnectionListener.onConnecting() is now invoked on incoming connections.</p>
+  </li>
+  <li>
+    <p>MSDK-389 - Copy params map passed to Device.connect() instead of modifying the user-supplied map.</p>
+  </li>
+  <li>
+    <p>MSDK-475 - Eliminated issue with updating capability token after token expires.</p>
+  </li>
+  <li>
+    <p>MSDK-476 - Fix rare registration failure with redirect.</p>
+  </li>
+  <li>
+    <p>MSDK-482 - Suppress wildcard certificate warning.</p>
+  </li>
+</ul>
+
+<h2 id="jan-29-2014">1.2.1 (Jan. 29, 2014)</h2>
+
+<h3 id="new-features-3">New Features</h3>
+
+<h3 id="bug-fixes-3">Bug Fixes</h3>
+
+<ul>
+  <li>
+    <p>ASDK-8 - CallSid is now available for outgoing calls.</p>
+  </li>
+  <li>
+    <p>MSDK-52 - Eliminated a rare crash when handling a 302 redirect response from Twilio.</p>
+  </li>
+  <li>
+    <p>MSDK-79, MSDK-64, MSDK-66, MSDK-96 and MSDK-178 - Fixed a number of crashes that could occur when answering an incoming call.</p>
+  </li>
+  <li>
+    <p>MSDK-89 - Fixed a crash that could occur when initializing a Device object with the incoming capability.</p>
+  </li>
+  <li>
+    <p>MSDK-298 - The SDK now uses OpenSSL v1.0.1k</p>
+  </li>
+  <li>
+    <p>MSDK-299 - Fixed a crash that would occur when caller hangs up right after initiating a call.</p>
+  </li>
+</ul>
+
+<h2 id="dec-18-2014">1.2.0 (Dec. 18, 2014)</h2>
 
 <p>Initial 1.2 release.</p>
 
-<p><strong>Support for Twilio’s Global Low Latency Routing</strong> </p>
+<p><strong>Support for Twilio’s Global Low Latency Routing</strong></p>
 
 <p>Twilio Client for Android now takes advantage of Twilio’s Global Low Latency (GLL) routing to further improve call quality. Media for all Twilio Client calls is routed to the Twilio data center geographically nearest to the user, significantly reducing call latency.</p>
 
-<p><strong>Richer Debug Logging</strong> </p>
+<p><strong>Richer Debug Logging</strong></p>
 
 <p>We’ve made it easier to find and resolve issues in your Twilio Client Android application with detailed logging with a simple API call.</p>
 
