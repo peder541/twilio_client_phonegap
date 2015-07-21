@@ -138,7 +138,7 @@ for APP_SID.</li>
   <li>Enter any caller ID that you've verified with your Twilio account in the
 CALLER_ID field.</li>
   <li>Click Create your application.</li>
-  <li>Once Heroku finishes, open up a second tab and <a href="https://www.twilio.com/user/account/apps/">return to the configuration screen for your TwiML app</a>. Enter your Heroku application's URL as the voice url for your application and save the change.</li>
+  <li>Once Heroku finishes, open up a second tab and return to the <a href="https://www.twilio.com/user/account/apps/">configuration screen for your TwiML app</a>. Enter your Heroku application's URL as the voice url for your application and save the change.</li>
 </ol>
 
 <h4 id="option-2-run-locally-using-ngrok">Option 2: Run Locally Using ngrok</h4>
@@ -155,8 +155,8 @@ match the values from your Twilio account. </li>
   <li>Download and install <a href="https://ngrok.com">ngrok</a> and setup a free ngrok
 account.</li>
   <li>Run <code>python server.py</code> to start the server.</li>
-  <li>Run <code>ngrok 5000</code> to open up a tunnel from the public internet to your server.</li>
-  <li><a href="https://www.twilio.com/user/account/apps/">Return to the configuration screen for your TwiML app</a> and enter your ngrok application's URL as the voice URL for your application and save the change.</li>
+  <li>Run <code>ngrok 5000</code> to open up a tunnel from the public Internet to your server.</li>
+  <li>Return to the <a href="https://www.twilio.com/user/account/apps/">configuration screen for your TwiML app</a> and enter your ngrok application's URL as the voice URL for your application and save the change.</li>
 </ol>
 
 <h4 id="testing-your-server">Testing your Server</h4>
@@ -247,7 +247,7 @@ grants it capabilities such as making outgoing calls or allowing incoming calls.
 
 <p><strong>For the security of your Twilio account, you should not embed a Capability Token or your Twilio Account's Auth Token in the app you submit to the App Store.</strong></p>
 
-<p>You can <a href="https://www.twilio.com/docs/client/capability-tokens">read more about capability tokens and their best practices here</a>.</p>
+<p>You can read more about capability tokens and their best practices <a href="https://www.twilio.com/docs/client/capability-tokens">here</a>.</p>
 
 <p>Tokens always have an expiration, which means all tokens have a limited lifetime to protect you from abuse. The token generated here is valid for one hour unless otherwise specified. To specify a different period of time, pass in the number of seconds as the <code>expires</code> parameter to <code>TwilioCapability.generate()</code> – for example, for a token that expires after 5 minutes, call <code>TwilioCapability.generate(expires = 300)</code>. The maximum allowed lifetime for a token is 24 hours.</p>
 
@@ -403,7 +403,7 @@ containing key <code>To</code> and value of the text field. Pass this dictionary
 }
 </pre>
 
-<p>Now, let's change our TwiML Application to point to our app's <code>/call</code> endpoint. Go to the <a href="https://www.twilio.com/user/account/apps">TwiML apps page in the account portal</a>, change your application's Voice URL to point to your server's <code>/call</code> endpoint: <code>http://{your server url}/call</code>, and save your changes.</p>
+<p>Now, let's change our TwiML Application to point to our app's <code>/call</code> endpoint. Go to the <a href="https://www.twilio.com/user/account/apps">TwiML apps page</a> in the account portal, change your application's Voice URL to point to your server's <code>/call</code> endpoint: <code>http://{your server url}/call</code>, and save your changes.</p>
 
 <p>Now, go ahead and compile your app for the iOS Simulator. Run it, enter
 another phone number in the box and hit dial. Your phone will ring
