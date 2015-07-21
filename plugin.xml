@@ -9,7 +9,9 @@
     <author>Stevie Graham/Lyle Pratt/Jeff Linwood</author>
     <license>Apache</license>
 
-    <asset src="www/tcPlugin.js" target="js/tcPlugin.js" />
+    <js-module src="www/tcPlugin.js" name="TCPlugin">
+      <clobbers target="window.Twilio"/>
+    </js-module>
 
     <!-- android -->
     <platform name="android">
