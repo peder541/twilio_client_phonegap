@@ -88,7 +88,7 @@ have an account, you can always sign up for a free
 
 <p>Visit <a href="https://www.twilio.com/user/account/apps/add">TwiML Apps in the Twilio Account Portal</a> and click ‘Create TwiML
 App’. Enter ‘Mobile Quickstart’ as the app’s Friendly Name and click ‘Save’. Don’t
-worry about the Voice and Messaging URLs yet–we’ll fill them in shortly. </p>
+worry about the Voice and Messaging URLs yet–we’ll fill them in shortly.</p>
 
 <p>Once the application is saved, make note of its ApplicationSid (a long string like “APa4983020a0b29fb5db1b1dc68e322fbe”). We’ll need this in the upcoming steps.</p>
 
@@ -137,7 +137,7 @@ for APP_SID.</li>
   <li>Enter any caller ID that you’ve verified with your Twilio account in the
 CALLER_ID field.</li>
   <li>Click Create your application.</li>
-  <li>Once Heroku finishes, open up a second tab and <a href="https://www.twilio.com/user/account/apps/">return to the configuration screen for your TwiML app</a>. Enter your Heroku application’s URL as the voice url for your application and save the change.</li>
+  <li>Once Heroku finishes, open up a second tab and <a href="https://www.twilio.com/user/account/apps/">return to the configuration screen for your TwiML app</a>. Configure the Voice URL to point to your Heroku application’s server <code>/call</code> URL and save the change.</li>
 </ol>
 
 <h4 id="option-2-run-locally-using-ngrok">Option 2: Run Locally Using ngrok</h4>
@@ -147,14 +147,14 @@ publicly-addressable tunnel to it using <a href="https://ngrok.com">ngrok</a>.</
 
 <ol>
   <li>Open server.py and modify <code>ACCOUNT_SID</code> and <code>AUTH_TOKEN</code> to
-match the values from your Twilio account. </li>
+match the values from your Twilio account.</li>
   <li>Modify <code>APP_SID</code> to match the App Sid you created above.</li>
   <li>Modify <code>CALLER_ID</code> to any caller ID that you’ve verified with your Twilio account.</li>
   <li>Install all the required python dependencies by running <code>pip install -r requirements.txt</code> from the <code>Server/</code> folder at the command line.</li>
   <li>Download and install <a href="https://ngrok.com">ngrok</a>.</li>
   <li>Run <code>python server.py</code> to start the server.</li>
   <li>Run <code>ngrok 5000</code> to open up a tunnel from the public internet to your server.</li>
-  <li><a href="https://www.twilio.com/user/account/apps/">Return to the configuration screen for your TwiML app</a> and enter your ngrok application’s URL as the voice URL for your application and save the change.</li>
+  <li><a href="https://www.twilio.com/user/account/apps/">Return to the configuration screen for your TwiML app</a>. Configure the Voice URL to point to your ngrok applications’s server <code>/call</code> URL and save the change.</li>
 </ol>
 
 <h4 id="testing-your-server">Testing your Server</h4>
@@ -230,12 +230,7 @@ public class MonkeyPhone implements Twilio.InitListener
     {
         Log.d(TAG, "Twilio SDK is ready");
 
-        try {
-            String capabilityToken = HttpHelper.httpGet("http://companyfoo.com/token");
-            device = Twilio.createDevice(capabilityToken, null /* DeviceListener */);
-        } catch (Exception e) {
-            Log.e(TAG, "Failed to obtain capability token: " + e.getLocalizedMessage());
-        }
+        new RetrieveCapabilityToken().execute("http://companyfoo.com/token");
     }
 
 }
@@ -245,7 +240,7 @@ public class MonkeyPhone implements Twilio.InitListener
 capability token, a string that, when given to a <code>Device</code> in your Android app, 
 grants it capabilities such as making outgoing calls or allowing incoming calls.</p>
 
-<p>Capability tokens are an important part of Twilio Client, so let’s take a moment to explain them. You use capability tokens to sign communications from your Android app to Twilio. In a production application, these tokens are created by you on your server and allow you to specify what capabilities are going to be available to your app, such as whether it can receive incoming connections, make outgoing connections, etc. </p>
+<p>Capability tokens are an important part of Twilio Client, so let’s take a moment to explain them. You use capability tokens to sign communications from your Android app to Twilio. In a production application, these tokens are created by you on your server and allow you to specify what capabilities are going to be available to your app, such as whether it can receive incoming connections, make outgoing connections, etc.</p>
 
 <p><strong>For the security of your Twilio account, you should not embed a Capability Token or your Twilio Account’s Auth Token in the app you submit to the Google Play Store.</strong></p>
 
@@ -342,7 +337,7 @@ button is pressed:</p>
 </pre>
 
 <p>That’s everything!  Go ahead and make another call.  You can now press the
-hangup button at any time and your connection will close. </p>
+hangup button at any time and your connection will close.</p>
 
 <h2 id="connecting-to-a-twiml-application">Connecting to a TwiML Application</h2>
 
@@ -378,7 +373,7 @@ def token():
   return capability.generate()
 </pre>
 
-<p>This portion of the code is responsible for creating a capability token that tells your Twilio Device what actions it is allowed to perform. </p>
+<p>This portion of the code is responsible for creating a capability token that tells your Twilio Device what actions it is allowed to perform.</p>
 
 <p>The two lines below tell your device to make outgoing connections to the App Sid <code>APa4983020a0b29fb5db1b1dc68e322fbe</code>.</p>
 
@@ -428,7 +423,7 @@ script when creating the connection.</p>
 <p>First, change the <code>MonkeyPhone.connect()</code> method to take in a <code>String</code> for the
 phone number in <code>MonkeyPhone.java</code>, and add the number to a <code>Map</code> using the key
 <code>To</code>.  Then pass that parameter <code>Map</code> when calling
-<code>Device.connect()</code>: </p>
+<code>Device.connect()</code>:</p>
 
 <h5 id="monkeyphonejava-3">MonkeyPhone.java</h5>
 
@@ -496,7 +491,7 @@ else:
 return str(resp)
 </pre>
 
-<p>This code looks at the <code>From</code> parameter in the request from Twilio. If the connection is coming from your Android application, it grabs the <code>To</code> parameter passed by your application and dials the number. </p>
+<p>This code looks at the <code>From</code> parameter in the request from Twilio. If the connection is coming from your Android application, it grabs the <code>To</code> parameter passed by your application and dials the number.</p>
 
 <p>Things work a bit differently if the call is coming from a PSTN phone number. Let’s dig into that now: Now, it’s time to get your app ringing.</p>
 
@@ -510,7 +505,7 @@ vice-versa).  Hold on tight…</p>
 <p>To receive incoming connections, we’ll do the following things:</p>
 
 <ol>
-  <li>Give the app client a name and “register” it with Twilio. </li>
+  <li>Give the app client a name and “register” it with Twilio.</li>
   <li>Add callbacks to notify your app of incoming connections via listener methods.</li>
 </ol>
 
@@ -562,12 +557,7 @@ public class MonkeyPhone implements Twilio.InitListener, DeviceListener
     {
         Log.d(TAG, "Twilio SDK is ready");
 
-        try {
-            String capabilityToken = HttpHelper.httpGet(""http://companyfoo.com/token?client=jenny");
-            device = Twilio.createDevice(capabilityToken, this);
-        } catch (Exception e) {
-            Log.e(TAG, "Failed to obtain capability token: " + e.getLocalizedMessage());
-        }
+        new RetrieveCapabilityToken().execute("http://companyfoo.com/token?client=jenny");
     }
 
     /* ... other methods ... */
@@ -620,16 +610,12 @@ have an incoming connection, and handle it if so.</li>
     {
         Log.d(TAG, "Twilio SDK is ready");
 
-        try {
-            String capabilityToken = HttpHelper.httpGet("http://companyfoo.com/token?client=jenny");
-            device = Twilio.createDevice(capabilityToken, this);
+        new RetrieveCapabilityToken().execute("http://companyfoo.com/token?client=jenny");
 
-            Intent intent = new Intent(context, HelloMonkeyActivity.class);
-            PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-            device.setIncomingIntent(pendingIntent);
-        } catch (Exception e) {
-            Log.e(TAG, "Failed to obtain capability token: " + e.getLocalizedMessage());
-        }
+        Intent intent = new Intent(context, HelloMonkeyActivity.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        device.setIncomingIntent(pendingIntent);
+    
     }
 
     /* ... other methods ... */
@@ -690,13 +676,13 @@ initiated an outgoing connection, and received an incoming connection.  Now,
 let’s call from one client to another.</p>
 
 <p>For this example, we’ll make a call between the Android Emulator and your
-device.  </p>
+device.</p>
 
 <p>To do this, we’ll need to log in as two different users. We’ll change
 the login code to register as “tommy” for the app in the Android Emulator,
 and “jenny” for the app on your Android device.</p>
 
-<p>In <code>MonkeyPhone</code>’s <code>onInitialized()</code> method, add some add some 
+<p>In <code>MonkeyPhone</code>’s <code>doInBackground(String... params)</code> method, add some add some 
 conditional-compilation code:</p>
 
 <h5 id="monkeyphonejava-6">MonkeyPhone.java</h5>
@@ -706,34 +692,49 @@ conditional-compilation code:</p>
 public void onInitialized()
 {
     Log.d(TAG, "Twilio SDK is ready");
+        
+    new RetrieveCapabilityToken().execute("http://companyfoo.com/token?client=");
 
-    try {
-        // the Emulator has a somewhat unique "product" name
+    Intent intent = new Intent(context, HelloMonkeyActivity.class);
+    PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+    device.setIncomingIntent(pendingIntent);
+}
+
+private class RetrieveCapabilityToken extends AsyncTask&lt;String, Void, String&gt;{
+
+    @Override
+    protected String doInBackground(String... params) {
+    
+    try{ 
         boolean isEmulator = Build.PRODUCT.equals("sdk") || Build.PRODUCT.equals("google_sdk");
         String clientName = isEmulator ? "tommy" : "jenny";
-        String capabilityToken = HttpHelper.httpGet("http://companyfoo.com/token?client=" + clientName);
-        device = Twilio.createDevice(capabilityToken, this);
-
-        Intent intent = new Intent(context, HelloMonkeyActivity.class);
-        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-        device.setIncomingIntent(pendingIntent);
-    } catch (Exception e) {
+        String capabilityToken = HttpHelper.httpGet(params[0] + clientName);
+        return capabilityToken; 
+    } catch( Exception e ){
         Log.e(TAG, "Failed to obtain capability token: " + e.getLocalizedMessage());
+        return null;
+    }
+
+    }
+
+    @Override 
+    protected void onPostExecute(String capabilityToken ){
+        MonkeyPhone.this.setCapabilityToken(capabilityToken);
     }
 }
 </pre>
 
-<p>The Python script has some  simple call routing rules: </p>
+<p>The Python script has some  simple call routing rules:</p>
 
 <ul>
-  <li>If the call is coming from PSTN, the app tells to Twilio to dial Client <code>jenny</code>. </li>
+  <li>If the call is coming from PSTN, the app tells to Twilio to dial Client <code>jenny</code>.</li>
   <li>Otherwise, the application tells Twilio to dial whatever number is passed in the <code>To</code> parameter: If the <code>To</code> parameter is a PSTN number, it writes that out within the <a href="http://www.twilio.com/docs/api/twiml/number"><code>&lt;Number&gt;</code></a> noun (which then will call a regular phone). If the <code>To</code> parameter is another client name, as indicated by <code>client:</code> prefix, it writes out a <a href="http://www.twilio.com/docs/api/twiml/client"><code>&lt;Client&gt;</code></a> noun, which will try and connect to a named Twilio Client app (a browser or another mobile client).</li>
 </ul>
 
 <p>So now build, install, and run your app on both your Android device and the
 Android Emulator.  Then have one of the platforms call the other (e.g. by
 typing “client:tommy” into the Android device’s app).  Once the connection has been
-established you should be able to talk between your phone and your laptop! And of course, you can call regular phone numbers as we demonstrated above.  </p>
+established you should be able to talk between your phone and your laptop! And of course, you can call regular phone numbers as we demonstrated above.</p>
 
 <h2 id="wrapping-up">Wrapping up</h2>
 
