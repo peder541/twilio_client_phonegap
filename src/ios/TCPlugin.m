@@ -41,7 +41,8 @@
 }
 
 -(void)device:(TCDevice *)device didReceiveIncomingConnection:(TCConnection *)connection {
-    self.connection = connection;    
+    connection.delegate = self;
+    self.connection = connection;
     [self javascriptCallback:@"onincoming"];
 }
 

@@ -134,10 +134,10 @@ application.</p>
 
 <h2 id="a-namebackgroundinghow-do-i-set-up-backgroundinga"><a name="backgrounding">How do I Set up Backgrounding?</a></h2>
 
-<p>You will want to ensure that the proper iOS flags (<code>audio</code>, <code>voip</code>) are
+<p>You want to ensure that the proper iOS flags (<code>audio</code>, <code>voip</code>) are
 set for your application plist key "UIBackgroundModes" if your
-application supports backgrounding.  Notice the <code>HelloMonkey-Info.plist</code>
-file has the following entries in the Quickstart projects:</p>
+application supports backgrounding.  Please, note that the <code>HelloMonkey-Info.plist</code>
+file has the following entries in the Quickstart project:</p>
 
 <pre class="brush: xml">
 &lt;key&gt;UIBackgroundModes&lt;/key&gt;
@@ -150,6 +150,12 @@ file has the following entries in the Quickstart projects:</p>
 <p>In Xcode 6, you can set this in your application target by navigating to
 the "Capabilities" pane and under "Background Modes" and checking "Audio and
 AirPlay" and "Voice over IP".</p>
+
+<p>When <code>TCDevice</code> is initialized with incoming connection capability, 
+the Twilio Client iOS SDK uses <code>setKeepAliveTimeout:handler:</code> to 
+maintain its registration to Twilio's servers. You are therefore unable 
+to use <code>setKeepAliveTimeout:handler:</code> in your application code as this 
+would interfere with the SDK's background behavior.</p>
 
 <p>For more information on backgrounding apps, including how to present
 notifications for incoming calls when your app is in background, see
@@ -187,7 +193,7 @@ route.</p>
 
 <p>If you need more advanced control over playback of sounds, you may
 provide audio resources with alternate names (and/or disable the sounds
-using the relevant properties on TCDevice) and manage playback using
+using the relevant properties on <code>TCDevice</code>) and manage playback using
 your own classes.</p>
 </div>
 
