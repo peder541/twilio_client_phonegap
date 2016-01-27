@@ -27,5 +27,15 @@ typedef NS_ENUM(NSInteger, TCLogLevel) {
 +(id)sharedInstance;
 -(void)setLogLevel:(TCLogLevel)level;
 
+/*!
+ *
+ * Enable or disable call quality metrics reporting.
+ * Reporting is enabled by default.
+ *
+ * @param enabled 'YES' to enable; 'NO' to disable.
+ *
+ */
+-(void)setMetricsEnabled:(BOOL)enabled;
+
 @end
 
