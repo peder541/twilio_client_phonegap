@@ -16,10 +16,12 @@
     NSString     *_callback;
 }
 
-@property(nonatomic, strong) TCDevice     *device;
-@property(nonatomic, strong) NSString     *callback;
-@property(atomic, strong)    TCConnection *connection;
-@property(atomic, strong)    UILocalNotification *ringNotification;
+@property(nonatomic, strong)    TCDevice     *device;
+@property(nonatomic, strong)    NSString     *callback;
+@property(atomic, strong)       TCConnection *connection;
+@property(atomic, strong)       UILocalNotification *ringNotification;
+@property(atomic, strong)       NSTimer      *timer;
+@property (nonatomic, assign)   NSInteger    *nbRepeats;
 
 -(void)javascriptCallback:(NSString *)event;
 -(void)javascriptCallback:(NSString *)event withArguments:(NSDictionary *)arguments;
@@ -34,6 +36,7 @@
 @synthesize connection = _connection;
 @synthesize ringNotification = _ringNotification;
 
+
 # pragma mark device delegate method
 
 -(void)device:(TCDevice *)device didStopListeningForIncomingConnections:(NSError *)error {
@@ -46,7 +49,7 @@
 }
 
 -(void)device:(TCDevice *)device didReceivePresenceUpdate:(TCPresenceEvent *)presenceEvent {
-    NSNumber *available = [NSNumber numberWithBool:presenceEvent.isAvailable];
+    NSString *available = [NSString stringWithFormat:@"%d", presenceEvent.isAvailable];
     NSDictionary *object = [NSDictionary dictionaryWithObjectsAndKeys:presenceEvent.name, @"from", available, @"available", nil];
     [self javascriptCallback:@"onpresence" withArguments:object];
 }
@@ -82,35 +85,52 @@
 
 -(void)deviceSetup:(CDVInvokedUrlCommand*)command {
     self.callback = command.callbackId;
-    NSString *token = [command.arguments objectAtIndex:0];
-    if (self.device) {
-        [self.device updateCapabilityToken:token];
-    }
-    else {
-        self.device = [[TCDevice alloc] initWithCapabilityToken:token delegate:self];
-    }
+    _nbRepeats = 0;
     
+    self.device = [[TCDevice alloc] initWithCapabilityToken:command.arguments[0] delegate:self];
+
     // Disable sounds. was getting EXC_BAD_ACCESS
     //self.device.incomingSoundEnabled   = NO;
     //self.device.outgoingSoundEnabled   = NO;
     //self.device.disconnectSoundEnabled = NO;
 
-    [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(deviceStatusEvent) userInfo:nil repeats:NO];
+    _timer = [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(deviceStatusEvent) userInfo:nil repeats:YES];
 }
 
 -(void)deviceStatusEvent {
+    
+    NSLog(@"Device state: %ld",(long) self.device.state);
+    
     switch ([self.device state]) {
+            
         case TCDeviceStateReady:
             [self javascriptCallback:@"onready"];
             NSLog(@"State: Ready");
+            
+            [_timer invalidate];
+            _timer = nil;
+            
             break;
             
         case TCDeviceStateOffline:
             [self javascriptCallback:@"onoffline"];
             NSLog(@"State: Offline");
+            
+            if ((long)_nbRepeats>20){
+                
+                [_timer invalidate];
+                _timer = nil;
+                _nbRepeats = 0;
+            }
+            else _nbRepeats++;
+            
             break;
             
         default:
+            
+            [_timer invalidate];
+            _timer = nil;
+            
             break;
     }
 }
@@ -125,6 +145,9 @@
 
 -(void)deviceStatus:(CDVInvokedUrlCommand*)command {
     NSString *state;
+    
+    NSLog(@"Device state: %ld",(long) self.device.state);
+    
     switch ([self.device state]) {
         case TCDeviceStateBusy:
             state = @"busy";
@@ -175,6 +198,7 @@
 
 -(void)connectionStatus:(CDVInvokedUrlCommand*)command {
     NSString *state;
+    
     switch ([self.connection state]) {
         case TCConnectionStateConnected:
             state = @"open";
@@ -205,49 +229,6 @@
 }
 
 
--(void)hasNotificationPermission:(CDVInvokedUrlCommand*)command {
-    [self.commandDelegate runInBackground:^{
-        CDVPluginResult* result;
-        BOOL hasPermission = [self hasPermissionToSheduleNotifications];
-
-        result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsBool:hasPermission];
-
-        [self.commandDelegate sendPluginResult:result callbackId:command.callbackId];
-    }];
-}
-
--(void)promptForNotificationPermission:(CDVInvokedUrlCommand*)command {
-#ifdef __IPHONE_8_0
-    if (NSFoundationVersionNumber > NSFoundationVersionNumber_iOS_7_1) {
-    
-        UIUserNotificationType types = UIUserNotificationTypeAlert|UIUserNotificationTypeBadge|UIUserNotificationTypeSound;
-        
-        UIUserNotificationSettings *settings = [UIUserNotificationSettings settingsForTypes:types categories:nil];
-        
-        [self.commandDelegate runInBackground:^{
-            [[UIApplication sharedApplication] registerUserNotificationSettings:settings];
-        }];
-    }
-#endif
-}
-
--(BOOL)hasPermissionToSheduleNotifications {
-#ifdef __IPHONE_8_0
-    if (NSFoundationVersionNumber > NSFoundationVersionNumber_iOS_7_1) {
-    
-        UIUserNotificationSettings *settings = [[UIApplication sharedApplication] currentUserNotificationSettings];
-        
-        UIUserNotificationType requiredTypes = UIUserNotificationTypeAlert|UIUserNotificationTypeBadge|UIUserNotificationTypeSound;
-        
-        return (settings.types & requiredTypes);
-    }
-    else
-#endif
-    {
-        return YES;
-    }
-}
-
 -(void)showNotification:(CDVInvokedUrlCommand*)command {
     @try {
         [[UIApplication sharedApplication] cancelAllLocalNotifications];
@@ -275,7 +256,6 @@
 -(void)cancelNotification:(CDVInvokedUrlCommand*)command {
     [[UIApplication sharedApplication] cancelLocalNotification:_ringNotification];
 }
-
 
 -(void)setSpeaker:(CDVInvokedUrlCommand*)command {
     NSString *mode = [command.arguments objectAtIndex:0];
