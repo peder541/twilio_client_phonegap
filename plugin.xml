@@ -40,7 +40,7 @@
         <source-file src="sdk/android/libs/twilioclient-android.jar"
                 target-dir="libs" />
                 
-        <dependency id="android.support.v4" url="https://github.com/zckrs/cordova-plugin-android-support-v4.git" />
+        <dependency id="cordova-android-support-v4" url="https://github.com/zckrs/cordova-plugin-android-support-v4.git" />
     </platform>
 
     <!-- ios -->
