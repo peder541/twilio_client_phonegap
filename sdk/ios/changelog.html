@@ -25,15 +25,72 @@
 
 <h1 id="twilio-client-ios-changes">Twilio Client iOS Changes</h1>
 
+<h2 id="nov-23-2015">1.2.7 (Nov. 23, 2015)</h2>
+
+<h3 id="bug-fixes">Bug Fixes</h3>
+
+<ul>
+  <li>CLIENT-1690 - Fixes a bug where an application was not able to receive presence events after calling <code>unlisten</code> then <code>listen</code> sequentially on <code>TCDevice</code>.</li>
+  <li>CLIENT-1695 - Initializing or updating a <code>TCDevice</code> instance with a <code>nil</code> or empty capability token string will now trigger the <code>device:didStopListeningForIncomingConnections:</code> delegate callback.</li>
+  <li>CLIENT-1812 - The SDK will no longer print log messages for temporary SIP registration redirects.</li>
+  <li>CLIENT-1878 - Fixes a crash when initializing or updating a <code>TCDevice</code> instance.</li>
+</ul>
+
+<h2 id="nov-9-2015">1.2.6 (Nov. 9, 2015)</h2>
+
+<h3 id="bug-fixes-1">Bug Fixes</h3>
+
+<ul>
+  <li>CLIENT-1688 - The SDK now gracefully handles audio interruptions from incoming phone calls and other audio events. The audio of a Twilio Client call will resume after an interruption ends.</li>
+  <li>CLIENT-1950 - The SDK automatically rejects pending incoming connections upon network reachability change events.</li>
+</ul>
+
+<h3 id="api-changes">API Changes</h3>
+
+<ul>
+  <li>CLIENT-2038 - New API <code>setMetricsEnabled:(BOOL)enabled</code> added in <code>TwilioClient</code> to enable/disable the collection and transmission to Twilio of call quality analytics. This feature is enabled by default.</li>
+</ul>
+
+<h2 id="sep-3-2015">1.2.5 (Sep. 3, 2015)</h2>
+
+<h3 id="bug-fixes-2">Bug Fixes</h3>
+
+<ul>
+  <li>CLIENT-1878 - <code>TCDevice</code> no longer automatically reconnects to Twilio following a disconnection due to bad network connectivity. The previous behavior produced a crash when the application developer simultaneously attempted to reconnect at the <code>device:didStopListeningForIncomingConnections:</code> delegate callback.</li>
+</ul>
+
+<h2 id="aug-13-2015">1.2.4 (Aug. 13, 2015)</h2>
+
+<h3 id="bug-fixes-3">Bug Fixes</h3>
+
+<ul>
+  <li>CLIENT-1878 - Fix crash when multiple <code>TCDevice</code> initializations or updates are made under bad network connectivity.</li>
+  <li>CLIENT-1823 - Twilio Client crashes when <code>TCDevice</code> set to <code>nil</code>.</li>
+  <li>CLIENT-1928 - Fix crash when phone is in airplane mode.</li>
+  <li>CLIENT-1915 - Convert BasicPhone sample app to ARC.</li>
+</ul>
+
+<h2 id="mar-19-2015">1.2.3 (Mar. 19, 2015)</h2>
+
+<h3 id="bug-fixes-4">Bug Fixes</h3>
+
+<ul>
+  <li>MSDK-181 - Fix crash when placing a call before registration completes.</li>
+  <li>MSDK-305 - Remove non-referenced libraries from sample projects.</li>
+  <li>MSDK-309 - Suppress warning message about wildcard certificates.</li>
+  <li>MSDK-388 - Fix crash on <code>TCPresenceEvent</code>.</li>
+  <li>MSDK-477 - Fix rare registration failure with redirect.</li>
+</ul>
+
 <h2 id="jan-29-2015">1.2.2 (Jan. 29, 2015)</h2>
 
-<p><strong>API Changes</strong></p>
+<h3 id="api-changes-1">API Changes</h3>
 
 <ul>
   <li>MSDK-87 - New API to obtain version of iOS SDK.</li>
 </ul>
 
-<p><strong>Bug Fixes</strong>*</p>
+<h3 id="bug-fixes-5">Bug Fixes</h3>
 
 <ul>
   <li>MSDK-8 - <code>TCDevice</code> state becomes <code>TCDeviceStateOffline</code> whenever its capability token expires.</li>
@@ -48,7 +105,7 @@
 
 <h2 id="dec-18-2014">1.2.1 (Dec. 18, 2014)</h2>
 
-<p><strong>Bug Fixes</strong></p>
+<h3 id="bug-fixes-6">Bug Fixes</h3>
 
 <ul>
   <li>MSDK-42 - Eliminated "duplicate symbol" error loading lib in TwilioSDK 1.2.</li>

@@ -163,7 +163,7 @@ while your application is not in the foreground.</p>
 
     &lt;!-- other application activity/service/broadcast-receiver tags --&gt;
 
-    &lt;service android:name="com.twilio.client.TwilioClientService" android:exported="false" /&gt;
+    &lt;service android:name="com.twilio.client.TwilioClientService" android:exported="false" android:stopWithTask="false" /&gt;
 
 &lt;/application&gt;
 </pre>
@@ -172,6 +172,8 @@ while your application is not in the foreground.</p>
 necessary to allow multiple instances of the <a href="http://developer.android.com/reference/android/app/Service.html">Service</a> to run if there are
 multiple applications installed on the device that use Twilio Client.
 The library will throw a <code>RuntimeException</code> if this attribute is not present.</p>
+
+<p>Also, notice the inclusion of the <code>android:stopWithTask="false"</code> attribute. This parameter ensures a specific cleanup sequence is executed by the SDK when the application is killed. The Twilio Client service will still be shutdown when the application is killed.</p>
 
 <p>Android will try to keep Services running even when an application's main Activity has been destroyed.  There are cases where the OS will need to reclaim memory and may have to kill background services.  Fortunately, Android <em>will</em> reschedule killed services for restart.</p>
 
@@ -199,7 +201,7 @@ want to override <a href="http://developer.android.com/reference/android/app/Act
 using a Service, you'll want to override <a href="http://developer.android.com/reference/android/app/Service.html#onStartCommand(android.content.Intent,%20int,%20int)">Service.onStartCommand()</a>.  For a BroadcastReceiver, override <a href="http://developer.android.com/reference/android/content/BroadcastReceiver.html#onReceive(android.content.Context,%20android.content.Intent)">BroadcastReceiver.onReceive()</a>.</p>
 
 <p>When you receive the intent, you can retrieve the <a href="javadoc/com/twilio/client/Device.html">Device</a> and <a href="javadoc/com/twilio/client/Connection.html">Connection</a> for the incoming call using <a href="http://developer.android.com/reference/android/content/Intent.html#getParcelableExtra(java.lang.String)">Intent.getParcelableExtra()</a>
-with the <a href="javadoc/com/twilio/client/Device.html#EXTRA_DEVICE">Device.EXTRA_DEVICE</a> and <a href="javadoc/com/twilio/client/Device.html#EXTRA_CONNECTION">Device.EXTRA_CONNECTION</a> keys, respectively.  </p>
+with the <a href="javadoc/com/twilio/client/Device.html#EXTRA_DEVICE">Device.EXTRA_DEVICE</a> and <a href="javadoc/com/twilio/client/Device.html#EXTRA_CONNECTION">Device.EXTRA_CONNECTION</a> keys, respectively.</p>
 
 <p>The following code snippet illustrates one simple pattern in a single-activity application:</p>
 
@@ -409,7 +411,7 @@ about media playback, please visit the
 <a href="http://developer.android.com/guide/topics/media/index.html">Android Multimedia Guide</a>.</p>
 
 <p>If you need more advanced control over playback of sounds, you may omit the sound resources, 
-disable the relevant properties on <a href="javadoc/com/twilio/client/Device.html">Device</a>, and manage playback with your own classes.  </p>
+disable the relevant properties on <a href="javadoc/com/twilio/client/Device.html">Device</a>, and manage playback with your own classes.</p>
 
 <h2 id="a-nameproguardwhat-is-the-recommended-proguard-directives-exclusions-when-running-the-twilio-client-for-androida"><a name="proguard">What is the recommended proguard directives (exclusions) when running the Twilio Client for Android?</a></h2>
 
